@@ -192,7 +192,43 @@ body.opened .nav { transform: none; transition-delay: 1.6s, 0s, 0s; }
 }
 .nav ul a:hover { opacity: 1; color: var(--gold-300); }
 .nav ul a:hover::after { transform: scaleX(1); transform-origin: left; }
-@media (max-width: 720px) { .nav ul { display: none; } .nav { justify-content: center; } }
+.nav__toggle, .menu { display: none; }
+
+@media (max-width: 720px) {
+  .nav ul { display: none; }
+  .nav { justify-content: space-between; }
+  body.menu-open { overflow: hidden; }
+  body.menu-open .nav { background: transparent; backdrop-filter: none; border-color: transparent; }
+
+  .nav__toggle {
+    display: grid; align-content: center; gap: 6px; width: 46px; height: 46px; padding: 0 11px;
+    background: rgba(7, 32, 29, .55); border: 1px solid rgba(230, 199, 127, .5); border-radius: 50%;
+    backdrop-filter: blur(8px); cursor: pointer; transition: background .3s, transform .4s var(--ease);
+  }
+  .nav__toggle span { display: block; height: 2px; border-radius: 2px; background: var(--gold-300); transition: transform .5s var(--ease), opacity .3s, width .4s var(--ease); }
+  .nav__toggle span:nth-child(2) { width: 70%; margin-left: auto; }
+  .nav__toggle:active { transform: scale(.92); }
+  .nav__toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .nav__toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav__toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+  .menu {
+    position: fixed; inset: 0; z-index: 65; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.4rem;
+    background: radial-gradient(ellipse at 50% 30%, rgba(20, 81, 72, .97), rgba(7, 32, 29, .99) 75%);
+    clip-path: circle(0% at calc(100% - 2.2rem) 2.2rem); visibility: hidden;
+    transition: clip-path .9s var(--ease), visibility 0s .9s;
+  }
+  .menu.open { clip-path: circle(150% at calc(100% - 2.2rem) 2.2rem); visibility: visible; transition: clip-path .9s var(--ease), visibility 0s; }
+  .menu ul { display: grid; gap: .3rem; text-align: center; }
+  .menu a {
+    display: block; padding: .35rem 1rem; font-family: var(--script); font-size: clamp(2.2rem, 10vw, 3rem); line-height: 1.2; color: var(--ivory);
+    opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease), transform .6s var(--ease), color .3s;
+  }
+  .menu a:active, .menu a:hover { color: var(--gold-300); }
+  .menu.open a { opacity: 1; transform: none; transition-delay: calc(.25s + var(--i) * .07s); }
+  .menu__foot { font-family: var(--sans); font-size: .7rem; letter-spacing: .32em; text-transform: uppercase; color: var(--gold-400); opacity: 0; transition: opacity .8s .8s; }
+  .menu.open .menu__foot { opacity: .85; }
+}
 
 /* =========================================================
    HERO
@@ -491,6 +527,18 @@ body.opened .scroll { animation: fadeIn 1s 4s forwards; }
 @media (max-width: 860px) {
   .datewrap, .venue { grid-template-columns: 1fr; }
   .venue__map, .venue__map iframe { min-height: 280px; }
+}
+
+@media (max-width: 560px) {
+  /* keep Groom ♥ Bride on one tidy row */
+  .duo { flex-wrap: nowrap; gap: .4rem; margin: 1.2rem 0 2.2rem; align-items: flex-start; }
+  .duo .person { flex: 1 1 0; min-width: 0; padding: .6rem .2rem; }
+  .person__mono { width: 86px; height: 86px; font-size: 2.8rem; margin-bottom: 1rem; }
+  .person__mono::after { inset: -14px; }
+  .person h3 { font-size: clamp(1.9rem, 8.4vw, 2.4rem); }
+  .person p { font-size: .6rem; letter-spacing: .26em; }
+  .duo__heart { flex: 0 0 auto; align-self: flex-start; margin-top: 2.2rem; }
+  .duo__heart svg { width: 28px; height: 28px; }
 }
 
 @media (max-width: 480px) {
