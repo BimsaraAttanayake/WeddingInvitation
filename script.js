@@ -265,6 +265,24 @@
   if (reduced) { document.body.classList.remove("locked"); intro.style.display = "none"; document.body.classList.add("opened"); startReveals(); }
 
   /* =========================================================
+     MOBILE MENU
+     ========================================================= */
+  const menu = $("#menu");
+  const toggle = $("#navToggle");
+  $$("a", menu).forEach((a, i) => a.style.setProperty("--i", i));
+  function setMenu(open) {
+    menu.classList.toggle("open", open);
+    document.body.classList.toggle("menu-open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    menu.setAttribute("aria-hidden", String(!open));
+  }
+  toggle.addEventListener("click", () => setMenu(!menu.classList.contains("open")));
+  $$("a", menu).forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+  matchMedia("(min-width: 721px)").addEventListener?.("change", (e) => { if (e.matches) setMenu(false); });
+
+  /* =========================================================
      SCROLL EFFECTS — parallax, nav, progress
      ========================================================= */
   const heroBg = $(".hero__bg");
